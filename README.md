@@ -17,7 +17,7 @@ Create a DB parameter group.
 
 ### Step 2: Modify the Custom DB Parameter Group
 
-Modify the custom DB parameter group, and then set the parameter: log_bin_trust_function_creators=1
+Modify the custom DB parameter group, and then set the parameter: `log_bin_trust_function_creators=1`
 Choose **Save Changes**.
 
 **Note:** Before you use the DB parameter group with a DB instance, wait at least 5 minutes.
@@ -43,7 +43,7 @@ If you already use a custom parameter group, then complete only steps 2-3. The p
 ## Troubleshooting
 
 When you turn on automated backup for a MySQL DB instance, you also turn on binary logging. When you create a trigger, you might receive the following error message:
-ERROR 1419 (HY000): You don't have the SUPER privilege and binary logging is enabled (you might want to use the less safe log_bin_trust_function_creators variable)
+`ERROR 1419 (HY000): You don't have the SUPER privilege and binary logging is enabled (you might want to use the less safe log_bin_trust_function_creators variable)`
 If you receive this error, then modify the `log_bin_trust_function_creators` parameter to `1`. This allows functions, procedures, and triggers on your DB instance. If you still get access denied errors after you set the parameter to `1`, then see [How can I resolve 1227 and definer errors when importing data to my Amazon RDS for MySQL DB instance using mysqldump?](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.Importing.html)
 
 **Note:** When you set `log_bin_trust_function_creators=1`, unsafe events might be written to the binary log. Binary logging is statement-based (`binlog_format=STATEMENT`).
