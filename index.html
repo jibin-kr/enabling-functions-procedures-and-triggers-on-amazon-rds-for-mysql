@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enabling Functions, Procedures, and Triggers on Amazon RDS for MySQL DB Instances</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Enabling Functions, Procedures, and Triggers on Amazon RDS for MySQL DB Instances</h1>
+        <p>Amazon RDS is a managed service and doesn't provide system access (SUPER privileges). To enable functions, procedures, and triggers, you need to turn on binary logging and set <code>log_bin_trust_function_creators</code> to <code>true</code> in the custom database (DB) parameter group for your DB instance.</p>
+        
+        <h2>Creating a DB Parameter Group</h2>
+        <p>If you create a DB instance and don't specify a DB parameter group, Amazon RDS creates a new default DB parameter group. For more information, see <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithParamGroups.html">Working with parameter groups</a>.</p>
+        
+        <h2>Enabling Functions, Procedures, and Triggers</h2>
+        <p>To turn on functions, procedures, and triggers for Amazon RDS for MySQL DB instances, complete the following steps:</p>
+        
+        <h3>Step 1: Create a DB Parameter Group</h3>
+        <p>Create a DB parameter group.</p>
+        
+        <h3>Step 2: Modify the Custom DB Parameter Group</h3>
+        <p>Modify the custom DB parameter group, and then set the parameter: <code>log_bin_trust_function_creators=1</code><br>
+        Choose <strong>Save Changes</strong>.</p>
+        <p><strong>Note:</strong> Before you use the DB parameter group with a DB instance, wait at least 5 minutes.</p>
+        
+        <h3>Step 3: Associate the Parameter Group with the DB Instance</h3>
+        <p>In the navigation pane, choose <strong>Databases</strong>.</p>
+        <p>Choose the DB instance that you want to associate with the DB parameter group.</p>
+        <p>Choose <strong>Modify</strong>.</p>
+        <p>Select the parameter group that you want to associate with the DB instance.</p>
+        <p>Reboot the DB instance.</p>
+        <p><strong>Note:</strong> The parameter group name changes immediately, but parameter group changes aren't applied until you reboot the instance without failover.</p>
+        
+        <h3>If You Already Use a Custom Parameter Group</h3>
+        <p>If you already use a custom parameter group, then complete only steps 2-3. The parameter <code>log_bin_trust_function_creators</code> is a dynamic parameter that doesn't require a DB reboot.</p>
+        
+        <h2>Troubleshooting</h2>
+        <p>When you turn on automated backup for a MySQL DB instance, you also turn on binary logging. When you create a trigger, you might receive the following error message:</p>
+        <pre><code>ERROR 1419 (HY000): You don't have the SUPER privilege and binary logging is enabled (you might want to use the less safe log_bin_trust_function_creators variable)</code></pre>
+        <p>If you receive this error, then modify the <code>log_bin_trust_function_creators</code> parameter to <code>1</code>. This allows functions, procedures, and triggers on your DB instance. If you still get access denied errors after you set the parameter to <code>1</code>, then see <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.Importing.html">How can I resolve 1227 and definer errors when importing data to my Amazon RDS for MySQL DB instance using mysqldump?</a></p>
+        <p><strong>Note:</strong> When you set <code>log_bin_trust_function_creators=1</code>, unsafe events might be written to the binary log. Binary logging is statement-based (<code>binlog_format=STATEMENT</code>).</p>
+        <p>For more details about the parameter <code>log_bin_trust_function_creators</code>, see <a href="https://dev.mysql.com/doc/refman/8.0/en/stored-programs-logging.html">log_bin_trust_function_creators and Stored program binary logging</a> on the MySQL website.</p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
 
